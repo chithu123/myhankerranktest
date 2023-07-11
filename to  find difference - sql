@@ -1,0 +1,7 @@
+Find the difference between the total number of CITY entries in the table and the number of distinct CITY entries in the table.
+The STATION table is described as follows:
+
+https://github.com/chithu123/myhankerranktest/blob/main/station.png
+
+
+select count(*) - count(Distinct city) as difference from station;
