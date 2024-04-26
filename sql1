@@ -1,0 +1,85 @@
+Write a query to print all prime numbers less than or equal to . Print your result on a single line, and use the ampersand () character as your separator (instead of a space).
+
+For example, the output for all prime numbers  would be:
+
+2&3&5&7
+
+
+
+SELECT 
+    GROUP_CONCAT(n SEPARATOR '&') AS primes
+FROM 
+    (SELECT 
+         a.n
+     FROM 
+         (SELECT 
+              2 AS n
+          UNION ALL
+          SELECT 
+              3
+          UNION ALL
+          SELECT 
+              5
+          UNION ALL
+          SELECT 
+              7) AS a
+     
+     UNION ALL
+     
+     SELECT 
+         a.n + b.i AS n
+     FROM 
+         (SELECT 
+              2 * t0.i + t1.i AS n
+          FROM 
+              (SELECT 0 AS i UNION ALL 
+                  SELECT 1 UNION ALL 
+                  SELECT 2 UNION ALL 
+                  SELECT 3 UNION ALL 
+                  SELECT 4 UNION ALL 
+                  SELECT 5 UNION ALL 
+                  SELECT 6 UNION ALL 
+                  SELECT 7 UNION ALL 
+                  SELECT 8 UNION ALL 
+                  SELECT 9) t0
+          CROSS JOIN
+              (SELECT 0 AS i UNION ALL 
+                  SELECT 1 UNION ALL 
+                  SELECT 2 UNION ALL 
+                  SELECT 3 UNION ALL 
+                  SELECT 4 UNION ALL 
+                  SELECT 5 UNION ALL 
+                  SELECT 6 UNION ALL 
+                  SELECT 7 UNION ALL 
+                  SELECT 8 UNION ALL 
+                  SELECT 9) t1
+          WHERE 
+              2 * t0.i + t1.i > 10
+          AND 
+              2 * t0.i + t1.i <= 1000) AS a
+     CROSS JOIN 
+         (SELECT 
+              0 AS i UNION ALL 
+                  SELECT 1 UNION ALL 
+                  SELECT 2 UNION ALL 
+                  SELECT 3 UNION ALL 
+                  SELECT 4 UNION ALL 
+                  SELECT 5 UNION ALL 
+                  SELECT 6 UNION ALL 
+                SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS b
+     WHERE 
+         a.n + b.i <= 1000
+     AND 
+         (a.n + b.i) % 2 != 0
+     AND 
+         (a.n + b.i) % 3 != 0
+     AND 
+         (a.n + b.i) % 5 != 0
+     AND 
+         (a.n + b.i) % 7 != 0
+     AND 
+         (a.n + b.i) % 11 != 0
+     ORDER BY 
+         n) AS c
+WHERE 
+    c.n <= 1000;
